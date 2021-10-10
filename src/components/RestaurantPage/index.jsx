@@ -3,12 +3,17 @@ import { useSelector, useDispatch } from "react-redux";
 import style from "./resPage.module.css";
 import { setDoc, doc, addDoc, collection } from "firebase/firestore";
 import db from "firebase";
+import "antd/dist/antd.css";
+import { Input, Button } from "antd";
+
+const { TextArea } = Input;
 
 const RestaurantPage = ({ match }) => {
   const restaurants = useSelector((store) => store.listState.restaurants);
   const id = match.params.resId;
   const [starsCount, setStarsCount] = useState(5);
   const [rate, setRate] = useState(0);
+  const [feadback, setFeadback] = useState("");
 
   if (!restaurants) {
     return (
@@ -18,24 +23,27 @@ const RestaurantPage = ({ match }) => {
     );
   }
 
-  const addFeedbeack = async () => {
-    const collectionRef = collection(db, "restaurant");
+  const onChange = (e) => {
+    setFeadback(e.target.value);
+  };
+  const addFeedbeack = async (id, feadback) => {
+    const collectionRef = collection(db, "feadbacks");
     const payload = {
-      imag: "https://yvn.reservin.am/uploads/place/10336/modified/thumb_440x330_a56eee6e8a93d9fa3620cee019f4c88e.jpg",
-      lat: 40.1893,
-      lng: 44.5124,
-      stars: "999",
-      title: "test",
-      vote: "777",
+      restaurant_id: id,
+      text: feadback,
     };
     await addDoc(collectionRef, payload);
+    setFeadback("");
   };
 
-  const toRate = async (id) => {
-    const docRef = doc(db, "restaurant", id);
+  const toRate = async (singleRes, rate) => {
+    const docRef = doc(db, "restaurant", singleRes.id);
+    const newStars = singleRes.stars + rate;
+    const newVote = singleRes.vote + 1;
     const payload = {
-      stars: "777999",
-      vote: "11111",
+      ...singleRes,
+      stars: newStars,
+      vote: newVote,
     };
     setDoc(docRef, payload);
   };
@@ -50,8 +58,19 @@ const RestaurantPage = ({ match }) => {
               <img className={style.mainImg} src={singleRes.image} alt="" />
               <h2>To Rate The Restourant</h2>
               {[...Array(starsCount)].map((n, i) => (
-                <div className={style.star} key={i} onClick={toRate(singleRes.id)}></div>
+                <div className={style.star} key={i} onClick={() => toRate(singleRes, i + 1)}></div>
               ))}
+              <TextArea
+                placeholder="Write Your Feadback"
+                showCount
+                maxLength={100}
+                onChange={onChange}
+                value={feadback}
+              />
+              <Button type="primary" onClick={() => addFeedbeack(singleRes.id, feadback)}>
+                Send
+              </Button>
+              <h2>FEADBACKS</h2>
             </div>
           );
         }

@@ -1,5 +1,6 @@
 const initialState = {
   restaurants: [],
+  feadback: [],
 };
 const restourantListReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -7,6 +8,12 @@ const restourantListReducer = (state = initialState, action) => {
       return {
         ...state,
         restaurants: action.list,
+      };
+    }
+    case "GET_FEADBACK": {
+      return {
+        ...state,
+        feadback: action.data,
       };
     }
     default:
