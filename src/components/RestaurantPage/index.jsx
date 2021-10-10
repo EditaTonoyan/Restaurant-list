@@ -14,9 +14,9 @@ const RestaurantPage = ({ match }) => {
   const id = match.params.resId;
   const dispatch = useDispatch();
   const [starsCount, setStarsCount] = useState(5);
-  // const [rate, setRate] = useState(0);
+  const [restaurantRate, setRestaurantRate] = useState(0);
   const [feadback, setFeadback] = useState("");
-  const [selected, setSelected] = useState({});
+  const [selectedRestaurant, setSelectedRestaurant] = useState({});
   useEffect(() => {
     onSnapshot(collection(db, "feadbacks"), (snapshot) => {
       let data = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
@@ -24,8 +24,7 @@ const RestaurantPage = ({ match }) => {
     });
     if (id && restaurants) {
       const selectedRestaurant = restaurants.find((item) => item.id === id);
-      console.log(selectedRestaurant);
-      setSelected(selectedRestaurant);
+      setSelectedRestaurant(selectedRestaurant);
     }
   }, [dispatch, restaurants, id]);
   if (!restaurants) {
@@ -49,28 +48,45 @@ const RestaurantPage = ({ match }) => {
     setFeadback("");
   };
 
-  const toRate = async (singleRes, rate) => {
+  const toRate = async (singleRes, ratedStar) => {
     const docRef = doc(db, "restaurant", singleRes.id);
-    const newStars = singleRes.stars + rate;
+    const newStars = singleRes.stars + ratedStar;
     const newVote = singleRes.vote + 1;
+
+    const newRate = Math.round((newStars / newVote) * 100) / 100;
+
     const payload = {
       ...singleRes,
       stars: newStars,
       vote: newVote,
+      rate: newRate,
     };
     setDoc(docRef, payload);
+    setRestaurantRate(ratedStar);
   };
 
   return (
     <div>
-      {selected && (
+      {selectedRestaurant && (
         <div>
-          <h1 className={style.name}>{selected.title}</h1>
-          <img className={style.mainImg} src={selected.image} alt="" />
+          <h1 className={style.name}>{selectedRestaurant.title}</h1>
+          <img className={style.mainImg} src={selectedRestaurant.image} alt="" />
           <h2>To Rate The Restourant</h2>
-          {[...Array(starsCount)].map((n, i) => (
-            <div className={style.star} key={i} onClick={() => toRate(selected, i + 1)}></div>
-          ))}
+          {[...Array(starsCount)].map((n, i) =>
+            i + 1 <= restaurantRate ? (
+              <div
+                className={style.selectedStar}
+                key={i}
+                onClick={() => toRate(selectedRestaurant, i + 1)}
+              ></div>
+            ) : (
+              <div
+                className={style.star}
+                key={i}
+                onClick={() => toRate(selectedRestaurant, i + 1)}
+              ></div>
+            )
+          )}
           <TextArea
             placeholder="Write Your Feadback"
             showCount
@@ -78,17 +94,19 @@ const RestaurantPage = ({ match }) => {
             onChange={onChange}
             value={feadback}
           />
-          <Button type="primary" onClick={() => addFeedbeack(selected.id, feadback)}>
+          <Button type="primary" onClick={() => addFeedbeack(selectedRestaurant.id, feadback)}>
             Send
           </Button>
           <h2>FEADBACKS</h2>
           {feadbacks
             ? feadbacks.map((text) => {
-                return (
-                  <div key={text.id}>
-                    <p>{text.text}</p>
-                  </div>
-                );
+                if (id === text.restaurant_id) {
+                  return (
+                    <div key={text.id}>
+                      <p>{text.text}</p>
+                    </div>
+                  );
+                }
               })
             : ""}
         </div>

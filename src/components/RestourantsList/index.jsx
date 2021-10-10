@@ -42,9 +42,9 @@ const RestourantList = () => {
                   <Meta title={res.title} onClick={() => handleModal(res)} />
 
                   <div className={style.starsRow}>
-                    {Math.round((res.stars / res.vote) * 100) / 100}
+                    {res.rate}
                     {[...Array(starsCount)].map((n, i) =>
-                      i + 1 <= Math.round(res.stars / res.vote) ? (
+                      i + 1 <= Math.round(res.rate) ? (
                         <div className={style.selectedStar} id={i} key={i}></div>
                       ) : (
                         <div className={style.star} id={i} key={i}></div>

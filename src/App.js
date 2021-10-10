@@ -11,7 +11,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    onSnapshot(query(collection(db, "restaurant"), orderBy("stars", "desc")), (snapshot) => {
+    onSnapshot(query(collection(db, "restaurant"), orderBy("rate", "desc")), (snapshot) => {
       let list = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       dispatch({ type: "GET_RESTAURANT_LISt", list });
     });
@@ -23,12 +23,7 @@ function App() {
           <RestourantList />
         </Route>
         <Route exact path="/restaurant/:resId" component={RestaurantPage} />
-        {/* <Route exact path="/restaurant:prestaurantId">
-          <RestaurantPage />
-        </Route> */}
       </Switch>
-
-      {/* <Map /> */}
     </div>
   );
 }
