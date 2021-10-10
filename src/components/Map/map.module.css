@@ -1,0 +1,22 @@
+.map {
+  width: 500px;
+  height: 250px;
+  float: right;
+  bottom: 390px;
+  position: absolute;
+  right: 30px;
+}
+
+/* .mark {
+  height: 250px;
+  width: 250px;
+} */
+.mark:hover {
+  color: red;
+}
+
+.text {
+  font-size: 20px;
+  font-weight: 400;
+  color: rgb(46, 45, 45);
+}

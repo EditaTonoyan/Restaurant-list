@@ -1,0 +1,70 @@
+.wrapper {
+  display: flex;
+  width: 402px;
+  left: 10px;
+  height: 120px;
+}
+.wrapper:first-child {
+  top: 10px;
+}
+
+.wrapper .line:first-child {
+  width: 400px;
+  margin: 20px 0 10px 9px;
+  color: rgba(52, 76, 76, 0.3);
+}
+
+.wrapper img {
+  width: 200px;
+}
+
+.line {
+  width: 400px;
+  margin: 10px 0 10px 9px;
+  color: rgba(52, 76, 76, 0.3);
+}
+.starsRow {
+  display: flex;
+  flex-direction: row;
+}
+.selectedStar {
+  cursor: pointer;
+  height: 25px;
+  width: 25px;
+  margin-left: 0px;
+  float: left;
+  background-color: rgba(226, 230, 14, 0.849);
+  clip-path: polygon(
+    50% 0%,
+    63% 38%,
+    100% 38%,
+    69% 59%,
+    82% 100%,
+    50% 75%,
+    18% 100%,
+    31% 59%,
+    0% 38%,
+    37% 38%
+  );
+}
+
+.star {
+  cursor: pointer;
+  height: 25px;
+  width: 25px;
+  margin-left: 0px;
+  float: left;
+  background-color: rgba(153, 153, 147, 0.849);
+  clip-path: polygon(
+    50% 0%,
+    63% 38%,
+    100% 38%,
+    69% 59%,
+    82% 100%,
+    50% 75%,
+    18% 100%,
+    31% 59%,
+    0% 38%,
+    37% 38%
+  );
+}
