@@ -1,21 +1,14 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import style from "./resPage.module.css";
-import { getDatabase, ref, set, update } from "firebase/database";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
+import db from "firebase";
 
 const RestaurantPage = ({ match }) => {
   const restaurants = useSelector((store) => store.listState.restaurants);
   const id = match.params.resId;
   const [starsCount, setStarsCount] = useState(5);
   const [rate, setRate] = useState(0);
-
-  const db = getDatabase();
-  const auth = getAuth();
-  // jWd7UORt9DYvxUWcMwD5E3r7i9g2;
-  console.log(auth);
-  const updates = {};
-  //updates["/restaurant/" + userId + "/DADX0T3k7dU2cIn7YRqY"] = { stars: 777 };
 
   if (!restaurants) {
     return (
@@ -24,10 +17,19 @@ const RestaurantPage = ({ match }) => {
       </section>
     );
   }
-  //   db.collection("restaurant").doc("8uV1cEyARjKRKjlmWNht").update({
-  //     vote: 22,
-  //     stars: 5,
-  //   });
+
+  const handleNew = async () => {
+    const docRef = doc(db, "restaurant", "oolkh");
+    const payload = {
+      imag: "https://yvn.reservin.am/uploads/place/10336/modified/thumb_440x330_a56eee6e8a93d9fa3620cee019f4c88e.jpg",
+      lat: 40.1893,
+      lng: 44.5124,
+      stars: "9",
+      title: "Forty-Four Sky Bar",
+      vote: "2",
+    };
+    await setDoc(docRef, payload);
+  };
 
   return (
     <div>
@@ -39,13 +41,7 @@ const RestaurantPage = ({ match }) => {
               <img className={style.mainImg} src={singleRes.image} alt="" />
               <h2>To Rate The Restourant</h2>
               {[...Array(starsCount)].map((n, i) => (
-                <div
-                  className={style.star}
-                  key={i}
-                  onClick={() => {
-                    // console.log(update(ref(db), updates));
-                  }}
-                ></div>
+                <div className={style.star} key={i} onClick={handleNew}></div>
               ))}
             </div>
           );
