@@ -1,5 +1,4 @@
 import "./App.css";
-import Map from "components/Map";
 import { useDispatch } from "react-redux";
 import RestourantList from "./components/RestourantsList";
 import RestaurantPage from "components/RestaurantPage";

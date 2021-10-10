@@ -23,6 +23,9 @@
   margin: 10px 0 10px 9px;
   color: rgba(52, 76, 76, 0.3);
 }
+.mainLeft {
+  width: 200px;
+}
 .starsRow {
   display: flex;
   flex-direction: row;
