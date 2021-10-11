@@ -15,7 +15,7 @@ const MyMarkerComponent = ({ title, lat, lng }) => (
     </div>
   </div>
 );
-const Map = () => {
+const Map = ({ toggleCoordMiddle }) => {
   const center = useSelector((store) => store.mapState.center);
   const zoom = useSelector((store) => store.mapState.zoom);
   const restaurants = useSelector((store) => store.listState.restaurants);

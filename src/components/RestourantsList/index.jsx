@@ -9,6 +9,7 @@ const { Meta } = Card;
 
 const RestourantList = () => {
   const restaurants = useSelector((store) => store.listState.restaurants);
+
   const [starsCount, setStarsCount] = useState(5);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalInfo, setModalInfo] = useState(false);
@@ -25,11 +26,9 @@ const RestourantList = () => {
     setModalInfo(res);
     showModal();
   };
+
   return (
     <div>
-      <a href="">
-        <img src="" alt="" />
-      </a>
       {restaurants
         ? restaurants.map((res) => {
             return (
@@ -51,9 +50,7 @@ const RestourantList = () => {
                       )
                     )}
                   </div>
-                  <Link to={`/restaurant/${res.id}`}>
-                    <p>View Restaurant </p>
-                  </Link>
+                  <Link to={`/restaurant/${res.id}`}>View Restaurant</Link>
                 </Card>
                 <hr className={style.line} />
               </div>
@@ -70,6 +67,7 @@ const RestourantList = () => {
       >
         Հասցե:
         {modalInfo.address}
+        );
       </Modal>
     </div>
   );
