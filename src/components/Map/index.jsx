@@ -41,7 +41,7 @@ const Map = ({ toggleCoordMiddle }) => {
           {restaurants
             ? restaurants.map((coord) => {
                 return (
-                  <div onClick={() => handleModal(coord)} className={style.mark}>
+                  <div key={coord.id} onClick={() => handleModal(coord)} className={style.mark}>
                     <Icon style={{ width: 30, height: 30 }} icon={locationIcon} />
                     <MyMarkerComponent
                       key={coord.id}
