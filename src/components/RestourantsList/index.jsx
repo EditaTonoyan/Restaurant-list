@@ -10,8 +10,6 @@ const { Meta } = Card;
 const RestourantList = () => {
   const state = useSelector((store) => store.listState);
 
-  // console.log(state.restaurants);
-
   const dispatch = useDispatch();
   const [starsCount, setStarsCount] = useState(5);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -30,14 +28,6 @@ const RestourantList = () => {
     showModal();
   };
 
-  const toggleCenter = (res) => {
-    const data = {
-      lat: res.lat,
-      lng: res.lng,
-    };
-    dispatch({ type: "TOGGLE_CENTER", data });
-  };
-
   return (
     <div>
       {state.restaurants
@@ -45,7 +35,6 @@ const RestourantList = () => {
             return (
               <div className={style.mainLeft} key={res.id}>
                 <Card
-                  onClick={() => toggleCenter(res)}
                   hoverable
                   className={style.wrapper}
                   cover={<img alt="example" src={res.image} />}
@@ -69,7 +58,7 @@ const RestourantList = () => {
             );
           })
         : ""}
-      <Map toggleCenter={toggleCenter} />
+      <Map />
 
       <Modal
         footer={null}
@@ -79,7 +68,6 @@ const RestourantList = () => {
       >
         Հասցե:
         {modalInfo.address}
-        <a href="">View on Google Maps </a>
         );
       </Modal>
     </div>

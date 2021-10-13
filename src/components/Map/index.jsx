@@ -16,11 +16,10 @@ const MyMarkerComponent = ({ title, lat, lng }) => (
   </div>
 );
 
-const Map = ({ toggleCenter }) => {
+const Map = () => {
   const { restaurants, center, zoom } = useSelector((store) => store.listState);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalInfo, setModalInfo] = useState(false);
-  const dispatch = useDispatch();
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -42,13 +41,7 @@ const Map = ({ toggleCenter }) => {
             ? restaurants.map((coord) => {
                 return (
                   <div key={coord.id} onClick={() => handleModal(coord)} className={style.mark}>
-                    <Icon
-                      style={{ width: 30, height: 30 }}
-                      icon={locationIcon}
-                      onClick={() => {
-                        toggleCenter(coord);
-                      }}
-                    />
+                    <Icon style={{ width: 30, height: 30 }} icon={locationIcon} />
                     <MyMarkerComponent
                       key={coord.id}
                       lat={coord.lat}
