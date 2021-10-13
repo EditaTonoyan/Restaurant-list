@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GoogleMapReact from "google-map-react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import style from "./map.module.css";
 import { Icon } from "@iconify/react";
 import { Modal } from "antd";
@@ -15,13 +15,12 @@ const MyMarkerComponent = ({ title, lat, lng }) => (
     </div>
   </div>
 );
-const Map = ({ toggleCoordMiddle }) => {
-  const center = useSelector((store) => store.mapState.center);
-  const zoom = useSelector((store) => store.mapState.zoom);
-  const restaurants = useSelector((store) => store.listState.restaurants);
+
+const Map = ({ toggleCenter }) => {
+  const { restaurants, center, zoom } = useSelector((store) => store.listState);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalInfo, setModalInfo] = useState(false);
-
+  const dispatch = useDispatch();
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -34,6 +33,7 @@ const Map = ({ toggleCoordMiddle }) => {
     setModalInfo(coord);
     showModal();
   };
+
   return (
     <div className={style.map}>
       <div style={{ height: "100vh", width: "100%" }}>
@@ -42,7 +42,13 @@ const Map = ({ toggleCoordMiddle }) => {
             ? restaurants.map((coord) => {
                 return (
                   <div key={coord.id} onClick={() => handleModal(coord)} className={style.mark}>
-                    <Icon style={{ width: 30, height: 30 }} icon={locationIcon} />
+                    <Icon
+                      style={{ width: 30, height: 30 }}
+                      icon={locationIcon}
+                      onClick={() => {
+                        toggleCenter(coord);
+                      }}
+                    />
                     <MyMarkerComponent
                       key={coord.id}
                       lat={coord.lat}

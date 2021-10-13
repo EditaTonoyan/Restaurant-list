@@ -15,6 +15,7 @@ const RestaurantPage = ({ match }) => {
   const id = match.params.resId;
 
   const dispatch = useDispatch();
+
   const [starsCount, setStarsCount] = useState(5);
   const [restaurantRate, setRestaurantRate] = useState(0);
   const [feadback, setFeadback] = useState("");
@@ -25,6 +26,7 @@ const RestaurantPage = ({ match }) => {
       let data = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       dispatch({ type: "GET_FEADBACK", data });
     });
+
     if (id && restaurants) {
       const selectedRestaurant = restaurants.find((item) => item.id === id);
       setSelectedRestaurant(selectedRestaurant);
@@ -86,14 +88,9 @@ const RestaurantPage = ({ match }) => {
                 onClick={() => toRate(selectedRestaurant, i + 1)}
               ></div>
             ) : (
-              <div
-                className={style.star}
-                key={i}
-                onClick={() => toRate(selectedRestaurant, i + 1)}
-              ></div>
+              <div className={style.star} onClick={() => toRate(selectedRestaurant, i + 1)}></div>
             )
           )}
-
           <TextArea
             placeholder="Write Your Feadback"
             showCount
@@ -102,7 +99,6 @@ const RestaurantPage = ({ match }) => {
             value={feadback}
             className={style.txt}
           />
-
           <Button
             className={style.btn}
             type="primary"
@@ -110,9 +106,7 @@ const RestaurantPage = ({ match }) => {
           >
             Send
           </Button>
-
           <h2 className={style.desc_ttl}>FEADBACKS</h2>
-
           <div className={style.desc_cont}>
             {feadbacks
               ? feadbacks.map((text) => {

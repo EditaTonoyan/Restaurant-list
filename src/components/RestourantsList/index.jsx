@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import style from "./list.module.css";
 import "antd/dist/antd.css";
 import { Card, Modal } from "antd";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import Map from "components/Map";
 const { Meta } = Card;
 
 const RestourantList = () => {
-  const restaurants = useSelector((store) => store.listState.restaurants);
+  const state = useSelector((store) => store.listState);
 
+  // console.log(state.restaurants);
+
+  const dispatch = useDispatch();
   const [starsCount, setStarsCount] = useState(5);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalInfo, setModalInfo] = useState(false);
@@ -27,13 +30,22 @@ const RestourantList = () => {
     showModal();
   };
 
+  const toggleCenter = (res) => {
+    const data = {
+      lat: res.lat,
+      lng: res.lng,
+    };
+    dispatch({ type: "TOGGLE_CENTER", data });
+  };
+
   return (
     <div>
-      {restaurants
-        ? restaurants.map((res) => {
+      {state.restaurants
+        ? state.restaurants.map((res) => {
             return (
               <div className={style.mainLeft} key={res.id}>
                 <Card
+                  onClick={() => toggleCenter(res)}
                   hoverable
                   className={style.wrapper}
                   cover={<img alt="example" src={res.image} />}
@@ -57,7 +69,7 @@ const RestourantList = () => {
             );
           })
         : ""}
-      <Map />
+      <Map toggleCenter={toggleCenter} />
 
       <Modal
         footer={null}
@@ -67,6 +79,7 @@ const RestourantList = () => {
       >
         Հասցե:
         {modalInfo.address}
+        <a href="">View on Google Maps </a>
         );
       </Modal>
     </div>
